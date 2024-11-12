@@ -3,8 +3,6 @@
 #include <stdbool.h>
 #include <limine.h>
 #include "display.h"
-#include "window.h"
-#include "desktop.h"
 
 void* memset(void* ptr, int value, size_t num) {
     unsigned char* p = (unsigned char*)ptr;
@@ -47,21 +45,8 @@ void kmain(void) {
 
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
-    // Initialize window manager and desktop
-    WindowManager wm;
-    Desktop desktop;
-    
-    init_window_manager(&wm);
-    init_desktop(&desktop, &wm);
-
-    // Create some sample windows
-    create_window(&wm, 100, 100, 400, 300, "Welcome to AxeniaOS");
-
     // Clear the framebuffer
-    memset((void *)framebuffer->address, 0, framebuffer->pitch * framebuffer->height);
-
-    // Draw the complete desktop
-    draw_desktop(framebuffer, &desktop);
+    memset((void *)framebuffer->address, 0, framebuffer->pitch * framebuffer->height);;
 
     // Hang the system
     hcf();
