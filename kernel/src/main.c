@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <limine.h>
 #include "display.h"
+#include "core/gdt.h"
 
 void* memset(void* ptr, int value, size_t num) {
     unsigned char* p = (unsigned char*)ptr;
@@ -47,6 +48,12 @@ void kmain(void) {
 
     // Clear the framebuffer
     memset((void *)framebuffer->address, 0, framebuffer->pitch * framebuffer->height);;
+
+    gdt_install();
+
+    draw_string(framebuffer, "Loaded GDT.", 1, 1, COLOR_WHITE);
+
+    draw_string(framebuffer, "Kernel Loaded.", 1, 11, COLOR_WHITE);
 
     // Hang the system
     hcf();
