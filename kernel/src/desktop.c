@@ -1,5 +1,6 @@
 #include "desktop.h"
 #include "display.h"
+#include "rtc.h"
 
 char *strcpy(char *dest, const char *src) {
     char *original_dest = dest; // Save the original pointer to the destination
@@ -16,7 +17,18 @@ char *strcpy(char *dest, const char *src) {
 
 void init_desktop(Desktop *desktop, WindowManager *wm) {
     desktop->wm = wm;
-    strcpy(desktop->time, "12:00");
+
+    // Get the current time from the RTC
+    uint8_t hours, minutes, seconds;
+    rtc_get_time(&hours, &minutes, &seconds);
+
+    // Manually format the time as "HH:MM"
+    desktop->time[0] = '0' + (hours / 10); // Tens place of hours
+    desktop->time[1] = '0' + (hours % 10); // Units place of hours
+    desktop->time[2] = ':';                 // Separator
+    desktop->time[3] = '0' + (minutes / 10); // Tens place of minutes
+    desktop->time[4] = '0' + (minutes % 10); // Units place of minutes
+    desktop->time[5] = '\0';                // Null-terminate the string
 }
 
 void draw_desktop_background(struct limine_framebuffer *fb) {
