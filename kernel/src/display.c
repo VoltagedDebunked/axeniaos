@@ -22,7 +22,11 @@ void draw_char(struct limine_framebuffer *fb, char c, uint32_t x, uint32_t y, ui
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (font[c][i] & (1 << j)) {
-                    draw_pixel(fb, x + j, y + i, color);
+                    // Draw a larger pixel (2x2 block)
+                    draw_pixel(fb, x + j * 2, y + i * 2, color);
+                    draw_pixel(fb, x + j * 2 + 1, y + i * 2, color);
+                    draw_pixel(fb, x + j * 2, y + i * 2 + 1, color);
+                    draw_pixel(fb, x + j * 2 + 1, y + i * 2 + 1, color);
                 }
             }
         }
@@ -32,7 +36,7 @@ void draw_char(struct limine_framebuffer *fb, char c, uint32_t x, uint32_t y, ui
 void draw_string(struct limine_framebuffer *fb, const char *str, uint32_t x, uint32_t y, uint32_t color) {
     while (*str) {
         draw_char(fb, *str, x, y, color);
-        x += 8;
+        x += 12; // Change from 8 to 16 for doubled size
         str++;
     }
 }

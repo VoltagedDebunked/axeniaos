@@ -4,6 +4,7 @@
 #include <limine.h>
 #include "display.h"
 #include "core/gdt.h"
+#include "core/idt.h"
 
 void* memset(void* ptr, int value, size_t num) {
     unsigned char* p = (unsigned char*)ptr;
@@ -51,9 +52,15 @@ void kmain(void) {
 
     gdt_install();
 
-    draw_string(framebuffer, "Loaded GDT.", 1, 1, COLOR_WHITE);
+    draw_string(framebuffer, "AxeniaOS V-1.0.0 x86_64", 1, 1, COLOR_WHITE);
 
-    draw_string(framebuffer, "Kernel Loaded.", 1, 11, COLOR_WHITE);
+    draw_string(framebuffer, "Loaded GDT.", 1, 40, COLOR_WHITE);
+
+    idt_install();
+
+    draw_string(framebuffer, "Loaded IDT.", 1, 60, COLOR_WHITE);
+
+    draw_string(framebuffer, "Kernel Loaded.", 1, 80, COLOR_WHITE);
 
     // Hang the system
     hcf();
