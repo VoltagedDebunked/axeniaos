@@ -1,10 +1,17 @@
 #include "desktop.h"
 #include "display.h"
 
-char* strcpy(char* dest, const char* src) {
-    char* original_dest = dest;
-    while ((*dest++ = *src++) != '\0');
-    return original_dest;
+char *strcpy(char *dest, const char *src) {
+    char *original_dest = dest; // Save the original pointer to the destination
+
+    while (*src != '\0') { // Loop until the end of the source string
+        *dest = *src;      // Copy each character
+        dest++;            // Move to the next character in the destination
+        src++;             // Move to the next character in the source
+    }
+    *dest = '\0'; // Null-terminate the destination string
+
+    return original_dest; // Return the original destination pointer
 }
 
 void init_desktop(Desktop *desktop, WindowManager *wm) {
@@ -14,14 +21,14 @@ void init_desktop(Desktop *desktop, WindowManager *wm) {
 
 void draw_desktop_background(struct limine_framebuffer *fb) {
     // Draw background
-    draw_rect(fb, 0, 0, fb->width, fb->height, COLOR_LIGHTGRAY);
+    draw_rect(fb, 0, 0, fb->width, fb->height, COLOR_BLUE);
     
     // Draw desktop icons
     const char* icon_names[] = {"My PC", "Documents", "Settings"};
     for (int i = 0; i < 3; i++) {
         uint32_t icon_y = 20 + (i * 70);
         draw_rect(fb, 20, icon_y, 40, 40, COLOR_GRAY);  // Icon box
-        draw_string(fb, icon_names[i], 10, icon_y + 45, COLOR_BLACK);
+        draw_string(fb, icon_names[i], 10, icon_y + 45, COLOR_WHITE);
     }
 }
 
@@ -39,6 +46,5 @@ void draw_taskbar(struct limine_framebuffer *fb, Desktop *desktop) {
 
 void draw_desktop(struct limine_framebuffer *fb, Desktop *desktop) {
     draw_desktop_background(fb);
-    draw_all_windows(fb, desktop->wm);
     draw_taskbar(fb, desktop);
 }

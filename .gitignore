@@ -4,3 +4,6 @@ kernel-deps
 /ovmf
 *.iso
 *.hdd
+
+/.vscode/
+/.idea/

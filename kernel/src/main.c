@@ -55,9 +55,7 @@ void kmain(void) {
     init_desktop(&desktop, &wm);
 
     // Create some sample windows
-    create_window(&wm, 100, 100, 400, 300, "Welcome to MyOS");
-    create_window(&wm, 150, 150, 300, 200, "Terminal");
-    create_window(&wm, 200, 200, 350, 250, "File Manager");
+    create_window(&wm, 100, 100, 400, 300, "Welcome to AxeniaOS");
 
     // Clear the framebuffer
     memset((void *)framebuffer->address, 0, framebuffer->pitch * framebuffer->height);

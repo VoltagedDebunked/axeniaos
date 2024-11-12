@@ -52,34 +52,35 @@ void draw_window(struct limine_framebuffer *fb, Window *window) {
         return;
     }
 
-    // Window background
-    draw_rect(fb, window->x, window->y, window->width, window->height, COLOR_WHITE);
-    
-    // Title bar
-    draw_rect(fb, window->x, window->y, window->width, WINDOW_TITLE_HEIGHT, 
-              window->is_active ? COLOR_BLUE : COLOR_GRAY);
-    draw_string(fb, window->title, window->x + 5, window->y + 8, COLOR_WHITE);
-    
-    // Window border
-    for (uint32_t i = 0; i < window->height; i++) {
-        draw_pixel(fb, window->x - 1, window->y + i, COLOR_GRAY);
-        draw_pixel(fb, window->x + window->width, window->y + i, COLOR_GRAY);
-    }
-    for (uint32_t i = 0; i < window->width + 1; i++) {
-        draw_pixel(fb, window->x + i - 1, window->y - 1, COLOR_GRAY);
-        draw_pixel(fb, window->x + i - 1, window->y + window->height, COLOR_GRAY);
-    }
-    
-    // Window controls (close button)
-    draw_rect(fb, window->x + window->width - 20, window->y + 5, 15, 15, COLOR_LIGHTGRAY);
-    draw_string(fb, "x", window->x + window->width - 15, window->y + 7, COLOR_BLACK);
-}
+    // Window dimensions
+    uint32_t x = window->x;
+    uint32_t y = window->y;
+    uint32_t width = window->width;
+    uint32_t height = window->height;
 
-void draw_all_windows(struct limine_framebuffer *fb, WindowManager *wm) {
-    // Draw windows from back to front
-    for (int i = 0; i < wm->window_count; i++) {
-        draw_window(fb, &wm->windows[i]);
+    // Draw window background (white)
+    draw_rect(fb, x, y, width, height, COLOR_WHITE);
+    
+    // Draw title bar (blue or gray)
+    draw_rect(fb, x, y, width, WINDOW_TITLE_HEIGHT, window->is_active ? COLOR_BLUE : COLOR_GRAY);
+    
+    // Draw the window title
+    draw_string(fb, window->title, x + 5, y + 8, COLOR_WHITE);
+    
+    // Draw window border (ASCII style)
+    for (uint32_t i = 0; i < width; i++) {
+        draw_pixel(fb, x + i, y, COLOR_GRAY); // Top border
+        draw_pixel(fb, x + i, y + height - 1, COLOR_GRAY); // Bottom border
     }
+    for (uint32_t i = 0; i < height; i++) {
+        draw_pixel(fb, x, y + i, COLOR_GRAY); // Left border
+        draw_pixel(fb, x + width - 1, y + i, COLOR_GRAY); // Right border
+    }
+
+    // Draw window controls (close button)
+    // Close button represented by a simple "X"
+    draw_rect(fb, x + width - 30, y + 5, 25, 25, COLOR_LIGHTGRAY);
+    draw_string(fb, "X", x + width - 25, y + 10, COLOR_BLACK); // Close button
 }
 
 void set_active_window(WindowManager *wm, int window_id) {
