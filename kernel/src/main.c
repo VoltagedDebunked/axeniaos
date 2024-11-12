@@ -6,14 +6,8 @@
 #include "core/gdt.h"
 #include "core/idt.h"
 #include "core/pic.h"
-
-void* memset(void* ptr, int value, size_t num) {
-    unsigned char* p = (unsigned char*)ptr;
-    while (num--) {
-        *p++ = (unsigned char)value;
-    }
-    return ptr;
-}
+#include "desktop.h"
+#include "lib/io.h"
 
 // Limine requests
 __attribute__((used, section(".limine_requests")))
@@ -66,6 +60,8 @@ void kmain(void) {
     draw_string(framebuffer, "Loaded PIC.", 1, 80, COLOR_WHITE);
 
     draw_string(framebuffer, "Kernel Loaded.", 1, 100, COLOR_WHITE);
+
+    display_axenia_menu(framebuffer);
 
     // Hang the system
     hcf();

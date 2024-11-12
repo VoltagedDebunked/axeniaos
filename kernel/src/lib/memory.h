@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define NULL 0
+typedef unsigned long size_t;
 
 #define MEMORY_POOL_SIZE 1024 * 1024  // 1MB
 static uint8_t kernel_memory_pool[MEMORY_POOL_SIZE];
