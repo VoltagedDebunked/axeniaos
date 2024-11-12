@@ -5,6 +5,7 @@
 #include "display.h"
 #include "core/gdt.h"
 #include "core/idt.h"
+#include "core/pic.h"
 
 void* memset(void* ptr, int value, size_t num) {
     unsigned char* p = (unsigned char*)ptr;
@@ -60,7 +61,11 @@ void kmain(void) {
 
     draw_string(framebuffer, "Loaded IDT.", 1, 60, COLOR_WHITE);
 
-    draw_string(framebuffer, "Kernel Loaded.", 1, 80, COLOR_WHITE);
+    pic_init();
+
+    draw_string(framebuffer, "Loaded PIC.", 1, 80, COLOR_WHITE);
+
+    draw_string(framebuffer, "Kernel Loaded.", 1, 100, COLOR_WHITE);
 
     // Hang the system
     hcf();

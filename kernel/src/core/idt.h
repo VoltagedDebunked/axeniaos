@@ -18,5 +18,8 @@ struct idt_ptr {
 
 void idt_install();
 void idt_set_gate(uint8_t num, uint64_t base, uint16_t selector, uint8_t flags);
+void pic_set_mask(uint8_t irq);
+void pic_clear_mask(uint8_t irq);
+
 
 #endif // IDT_H
