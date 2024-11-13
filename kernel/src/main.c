@@ -6,7 +6,6 @@
 #include "core/gdt.h"
 #include "core/idt.h"
 #include "core/pic.h"
-#include "desktop.h"
 #include "lib/io.h"
 
 // Limine requests
@@ -18,6 +17,16 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST,
     .revision = 0
 };
+
+void *memset(void *s, int c, size_t n) {
+    uint8_t *p = (uint8_t *)s;
+
+    for (size_t i = 0; i < n; i++) {
+        p[i] = (uint8_t)c;
+    }
+
+    return s;
+}
 
 static void hcf(void) {
     for (;;) {
@@ -60,8 +69,6 @@ void kmain(void) {
     draw_string(framebuffer, "Loaded PIC.", 1, 80, COLOR_WHITE);
 
     draw_string(framebuffer, "Kernel Loaded.", 1, 100, COLOR_WHITE);
-
-    display_axenia_menu(framebuffer);
 
     // Hang the system
     hcf();
